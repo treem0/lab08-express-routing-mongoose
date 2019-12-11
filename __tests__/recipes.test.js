@@ -5,6 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Recipe = require('../lib/models/Recipe');
+const Event = require('../lib/models/Event');
 
 describe('recipe routes', () => {
   beforeAll(() => {
@@ -15,6 +16,29 @@ describe('recipe routes', () => {
     return mongoose.connection.dropDatabase();
   });
 
+  let cookie;
+  let cookiesEvent;
+  beforeEach(async() => {
+    cookie = await Recipe
+      .create({
+        name: 'Cookies',
+        ingredients: [
+          { name: 'flour', amount: 1, measurement: 'cup' }
+        ],
+        directions: [
+          'preheat oven to 375',
+          'mix ingredients',
+          'put dough on cookie sheet',
+          'bake for 10 minutes'
+        ]
+      });
+
+    cookiesEvent = await Event.create([
+      { recipeId: cookie._id, dateOfEvent: Date.now(), rating: 3 },
+      { recipeId: cookie._id, dateOfEvent: Date.now(), rating: 4 },
+      { recipeId: cookie._id, dateOfEvent: Date.now(), rating: 1 }
+    ]);
+  });
   afterAll(() => {
     return mongoose.connection.close();
   });
@@ -83,6 +107,7 @@ describe('recipe routes', () => {
         'put dough on cookie sheet',
         'bake for 10 minutes'
       ],
+      events: JSON.parse(JSON.stringify(cookie))
     });
 
     return request(app)
