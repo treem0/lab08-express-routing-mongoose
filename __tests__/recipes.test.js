@@ -111,6 +111,7 @@ describe('recipe routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          events: JSON.parse(JSON.stringify(cookiesEvent)),
           __v: 0
         });
       });
