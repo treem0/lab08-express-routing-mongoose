@@ -153,28 +153,15 @@ describe('recipe routes', () => {
   });
 
   it('deletes a recipe by id', async() => {
-    const recipe = await Recipe.create({
-      name: 'cookies',
-      ingredients: [
-        { name: 'flour', amount: 1, measurement: 'cup' }
-      ],
-      directions: [
-        'preheat oven to 375',
-        'mix ingredients',
-        'put dough on cookie sheet',
-        'bake for 10 minutes'
-      ],
-      events: JSON.parse(JSON.stringify(cookie))
-    });
 
     return request(app)
-      .delete(`/api/v1/recipes/${recipe._id}`)
+      .delete(`/api/v1/recipes/${cookie._id}`)
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          name: 'cookies',
+          name: 'Cookies',
           ingredients: [
-            { _id: expect.any(String), name: 'flour', amount: 1, measurement: 'cup' }
+            { name: 'flour', amount: 1, measurement: 'cup', _id: expect.any(String) }
           ],
           directions: [
             'preheat oven to 375',
@@ -182,6 +169,7 @@ describe('recipe routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          events: JSON.parse(JSON.stringify(cookiesEvent)),
           __v: 0
         });
       });
