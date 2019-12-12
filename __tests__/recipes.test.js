@@ -104,7 +104,8 @@ describe('recipe routes', () => {
         expect(res.body).toEqual([{
           _id: cookie._id.toString(),
           name: cookie.name
-        }]);
+        }]
+        );
       });
   });
 
