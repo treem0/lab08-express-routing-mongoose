@@ -94,6 +94,19 @@ describe('recipe routes', () => {
         });
       });
   });
+  it('gets all recipes using query string', async() => {
+    const cookie = await Recipe.create(
+      { name: 'cookie', directions: [] });
+
+    return request(app)
+      .get('/api/v1/recipes?name=cookie')
+      .then(res => {
+        expect(res.body).toEqual([{
+          _id: cookie._id.toString(),
+          name: cookie.name
+        }]);
+      });
+  });
 
   it('gets a recipe by id', async() => {
     return request(app)
