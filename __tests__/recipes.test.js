@@ -94,16 +94,23 @@ describe('recipe routes', () => {
         });
       });
   });
-  it('gets all recipes using query string', async() => {
-    const cookie = await Recipe.create(
-      { name: 'cookie', directions: [] });
-
+  it('gets all recipes with a specific ingredient using query string', async() => {
     return request(app)
-      .get('/api/v1/recipes?name=cookie')
+      .get('/api/v1/recipes?ingredient=flour')
       .then(res => {
         expect(res.body).toEqual([{
           _id: cookie._id.toString(),
-          name: cookie.name
+          name: 'Cookies',
+          ingredients: [
+            { _id: expect.any(String), name: 'flour', amount: 1, measurement: 'cup' }
+          ],
+          directions: [
+            'preheat oven to 375',
+            'mix ingredients',
+            'put dough on cookie sheet',
+            'bake for 10 minutes'
+          ],
+          __v: 0
         }]
         );
       });
